@@ -16,5 +16,5 @@ module.exports = server => {
     routes.put('/delete', upload.none(), destroy);
     routes.put('/change-status', upload.none(), changeStatus);
 
-    server.use('/api/admin/color', routes)
+    server.use('/api/admin/material', routes)
 }

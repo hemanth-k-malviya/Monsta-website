@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { ChromePicker } from "react-color";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,11 +8,26 @@ export default function AddColor() {
   const [color, setColor] = useState("#000000");
   const params = useParams();
   const [updateId, setUpdateId] = useState('');
+  const [colorDetails, setColorDetails] = useState('')
   const navigate = useNavigate();
 
   useEffect(() => {
     if (params.id != '') {
       setUpdateId(params.id);
+
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_BASE_URL}/details/${params.id}`)
+        .then((result) => {
+          if (result.data._status == true) {
+            setColorDetails(result.data._data)
+            setColor(result.data._data.code)
+          } else {
+            setColorDetails('');
+
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !!')
+        })
     }
   }, [params])
 
@@ -32,7 +46,7 @@ export default function AddColor() {
 
     if (!updateId) {
       //add color
-      axios.post('http://localhost:5006/api/admin/color/create',formData)
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_BASE_URL}/create`, formData)
         .then((result) => {
           if (result.data._status == true) {
             toast.success(result.data._message);
@@ -45,8 +59,22 @@ export default function AddColor() {
         .catch(() => {
           toast.error('Something went wrong !');
         })
-    } else {
+    } 
+    else {
       //update color
+      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_BASE_URL}/update/${updateId}`, formData)
+        .then((result) => {
+          if (result.data._status == true) {
+            toast.success(result.data._message);
+            event.target.reset()
+            navigate('/color/view')
+          } else {
+            toast.error(result.data._message);
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !');
+        })
     }
   }
 
@@ -67,6 +95,7 @@ export default function AddColor() {
             <label className="block text-md font-medium text-gray-900">Color Name</label>
             <input
               type="text" name="name"
+              defaultValue={colorDetails.name}
               // {...register("colorName", { required: "Color Name is required" })}
               className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
               placeholder="Enter Color Name"
@@ -88,6 +117,7 @@ export default function AddColor() {
             <label className="block text-md font-medium text-gray-900">Order</label>
             <input
               type="number" name="order"
+              defaultValue={colorDetails.order}
               // {...register("colorOrder", {
               //   required: "Order is required",
               //   min: { value: 1, message: "Order must be at least 1" },
