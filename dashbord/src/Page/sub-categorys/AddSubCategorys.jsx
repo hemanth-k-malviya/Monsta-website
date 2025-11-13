@@ -17,12 +17,14 @@ export default function AddSubCategorys() {
   const [imageURL, setImageUrl] = useState('');
   const [subCategoryDetails, setSubCategoryDetails] = useState('')
   const navigate = useNavigate();
-
+ const [parent_category_id, set_parent_category_id] = useState('');
 
 
   // view category
   useEffect(() => {
-    axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/view-category`)
+    axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/view-category`,{
+      id:parent_category_id
+    })
       .then((result) => {
         if (result.data._status == true) {
           setCategories(result.data._data)
@@ -33,7 +35,7 @@ export default function AddSubCategorys() {
       .catch(() => {
         toast.error('Something went wrong !!');
       })
-  }, []);
+  }, [parent_category_id]);
 
   // Dropify
   useEffect(() => {
@@ -62,6 +64,7 @@ export default function AddSubCategorys() {
         .then((result) => {
           if (result.data._status == true) {
             setSubCategoryDetails(result.data._data)
+            set_parent_category_id(result.data._data.parent_category)
             if (result.data._data.image != '') {
               setImageUrl(`${result.data._image_path}${result.data._data.image}`)
             }
@@ -102,7 +105,7 @@ export default function AddSubCategorys() {
           if (result.data._status == true) {
             toast.success(result.data._message);
             event.target.reset()
-            navigate('/sub-categorys/view')
+            navigate('sub-categorys/view')
           } else {
             toast.error(result.data._message);
           }
@@ -156,7 +159,7 @@ export default function AddSubCategorys() {
                     {
                       categories.map((v, i) => {
                         return (
-                          <option value={v._id}>{v.name}</option>
+                          <option value={v._id} selected={v._id == subCategoryDetails.parent_category ? 'selected' : ''}>{v.name}</option>
                         )
 
                       })
@@ -174,6 +177,7 @@ export default function AddSubCategorys() {
                   <input
                     type="text"
                     name='name'
+                    defaultValue={subCategoryDetails.name}
                     id="categoryName"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Category Name"
@@ -191,6 +195,7 @@ export default function AddSubCategorys() {
                   <input
                     type="text"
                     name='order'
+                    defaultValue={subCategoryDetails.order}
                     id="categoryName"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Category Order"

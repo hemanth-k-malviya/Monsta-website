@@ -1,7 +1,6 @@
-
 const { default: slugify } = require('slugify');
-const categoryModal = require('../../models/category');
 const subCategoryModal = require('../../models/subCategory');
+const subSubCategoryModal = require('../../models/subSubCategory');
 const env = require('dotenv').config();
 
 const generateUniqueSlug = async (Model, baseSlug) => {
@@ -17,7 +16,7 @@ const generateUniqueSlug = async (Model, baseSlug) => {
     return slug;
 };
 
-exports.viewCategory = async (request, response) => {
+exports.viewSubCategory = async (request, response) => {
 
     try {
 
@@ -37,6 +36,11 @@ exports.viewCategory = async (request, response) => {
                     orCondition.push({ _id: request.body.id })
                 }
             }
+            if (request.body.parent_category != undefined) {
+                if (request.body.parent_category != '') {
+                    addCondition.push({ parent_category: request.body.parent_category })
+                }
+            }
 
         }
 
@@ -50,7 +54,7 @@ exports.viewCategory = async (request, response) => {
             filter.$or = orCondition;
         }
 
-        await categoryModal.find(filter).select('name image status order').sort({ _id: 'desc' })
+        await subCategoryModal.find(filter).select('_id name parent_category').sort({ _id: 'desc' })
             .then((result) => {
                 if (result.length > 0) {
                     const data = {
@@ -91,14 +95,14 @@ exports.viewCategory = async (request, response) => {
 }
 
 exports.create = async (request, response) => {
-    
+
     var data = request.body;
     if (request.body.name) {
         var slug = slugify(request.body.name, {
             lower: true,      // convert to lower case, defaults to `false`
             strict: true,     // strip special characters except replacement, defaults to `false`
         });
-        data.slug = await generateUniqueSlug(categoryModal, slug)
+        data.slug = await generateUniqueSlug(subSubCategoryModal, slug)
     }
 
 
@@ -106,12 +110,12 @@ exports.create = async (request, response) => {
     if (request.file) {
         data.image = request.file.filename;
     }
-     // data.parent_category=request.body.parent_category_id
+    // data.parent_category=request.body.parent_category_id
     try {
 
-        var saveData = new subCategoryModal(data).save()
-            .then(async(result) => {
-                 await categoryModal.updateOne({ _id: request.body.sub_categories }, { $push: { sub_categories: { $each: [result._id] } } });
+        var saveData = new subSubCategoryModal(data).save()
+            .then(async (result) => {
+                await subCategoryModal.updateOne({ _id: request.body.sub_category }, { $push: { sub_sub_categories: { $each: [result._id] } } });
                 const data = {
                     _status: true,
                     _message: 'record created succssfully',
@@ -187,6 +191,12 @@ exports.view = async (request, response) => {
                 }
 
             }
+            if (request.body.sub_category != undefined) {
+                if (request.body.sub_category != '') {
+                    addCondition.push({ sub_category: request.body.sub_category })
+                }
+
+            }
 
         }
 
@@ -202,11 +212,12 @@ exports.view = async (request, response) => {
 
         console.log(filter)
 
-        total_record = await subCategoryModal.find(filter).countDocuments()
+        total_record = await subSubCategoryModal.find(filter).countDocuments()
 
-        await subCategoryModal.find(filter)
-        .populate('parent_category','name image')
-        .select('name parent_category sub_sub_categories image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
+        await subSubCategoryModal.find(filter)
+            .select('name parent_category image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
+            .populate('parent_category', 'name')
+            .populate('sub_category', 'name')
             .then((result) => {
                 if (result.length > 0) {
 
@@ -236,6 +247,8 @@ exports.view = async (request, response) => {
             })
             .catch((error) => {
 
+                console.log(error)
+
                 const data = {
                     _status: false,
                     _message: 'Something went wrong',
@@ -259,7 +272,7 @@ exports.details = async (request, response) => {
 
     try {
 
-        await subCategoryModal.findById(request.params.id)
+        await subSubCategoryModal.findById(request.params.id)
             .then((result) => {
                 if (result) {
                     const data = {
@@ -303,14 +316,14 @@ exports.update = async (request, response) => {
     try {
         var data = request.body;
 
-      
-            var slug = slugify(request.body.name, {
-                lower: true,      // convert to lower case, defaults to `false`
-                strict: true,     // strip special characters except replacement, defaults to `false`
-            });
-        
 
-        data.slug = await generateUniqueSlug(categoryModal, slug)
+        var slug = slugify(request.body.name, {
+            lower: true,      // convert to lower case, defaults to `false`
+            strict: true,     // strip special characters except replacement, defaults to `false`
+        });
+
+
+        data.slug = await generateUniqueSlug(subSubCategoryModal, slug)
 
 
         data.updated_at = Date.now();
@@ -322,14 +335,16 @@ exports.update = async (request, response) => {
 
         }
 
-        await subCategoryModal.updateOne({
+        await subSubCategoryModal.updateOne({
             _id: request.params.id
         }, {
             $set: data
         })
-            .then(async(result) => {
+            .then(async (result) => {
                 if (result.matchedCount == 1) {
-                     await categoryModal.updateOne({ _id: request.body.sub_categories }, { $push: { sub_categories: { $each: [result.params.id] } } });
+                    
+                    await subCategoryModal.updateOne({ _id: request.body.sub_category }, { $push: { sub_sub_categories: { $each: [result._id] } } });
+
                     const data = {
                         _status: true,
                         _message: 'record update succssfully',
@@ -379,8 +394,10 @@ exports.destroy = async (request, response) => {
             deleted_at: Date.now()
         }
 
-        await categoryModal.updateMany({
+        await subSubCategoryModal.updateMany({
+
             _id: request.body.ids
+
         }, {
             $set: data
         })
@@ -431,7 +448,7 @@ exports.destroy = async (request, response) => {
 }
 exports.changeStatus = async (request, response) => {
     try {
-        await categoryModal.updateMany({
+        await subSubCategoryModal.updateMany({
             _id: request.body.ids
         }, [{
             $set: {

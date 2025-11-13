@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes,  } from 'react-router-dom'
 import Layout from './homeP/Layout.jsx'
 import AddColor from './Page/color/AddColor.jsx'
 import ViewColor from './Page/color/ViewColor.jsx'
@@ -79,7 +79,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="sub-categorys" >
             <Route path='add' element={<AddSubCategorys />} />
             <Route path='view' element={<ViewSubCategorys />} />
-            <Route path='update/:id' element={<AddSubCategorys />} />
+            <Route path='update/:id' element={<AddSubCategorys/>} />
 
           </Route>
 

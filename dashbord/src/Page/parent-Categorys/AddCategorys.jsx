@@ -87,13 +87,13 @@ export default function AddCategory() {
         })
     }
     else {
-      //update material
+      //update category
       axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_PARENT_CATEGORY_API}/update/${updateId}`, event.target)
         .then((result) => {
           if (result.data._status == true) {
             toast.success(result.data._message);
             event.target.reset()
-            navigate('/parent-category/view')
+            navigate('parent-category/view')
           } else {
             toast.error(result.data._message);
           }
