@@ -3,7 +3,7 @@ const routes = express.Router();
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/categories' })
 const path = require('path');
-const { viewCategory,view, create, details, update, destroy, changeStatus } = require('../../controller/admin/subCategory.controller');
+const { viewCategory, view, create, details, update, destroy, changeStatus } = require('../../controller/admin/subCategory.controller');
 
 
 module.exports = server => {
@@ -27,7 +27,7 @@ module.exports = server => {
     routes.post('/create', singleImage, create);
 
     routes.post('/view', upload.none(), view);
-
+    
     routes.post('/details/:id', upload.none(), details);
 
     routes.put('/update/:id', singleImage, update);

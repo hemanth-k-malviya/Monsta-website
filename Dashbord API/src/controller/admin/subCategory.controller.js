@@ -98,7 +98,7 @@ exports.create = async (request, response) => {
             lower: true,      // convert to lower case, defaults to `false`
             strict: true,     // strip special characters except replacement, defaults to `false`
         });
-        data.slug = await generateUniqueSlug(categoryModal, slug)
+        data.slug = await generateUniqueSlug(subCategoryModal, slug)
     }
 
 
@@ -111,7 +111,7 @@ exports.create = async (request, response) => {
 
         var saveData = new subCategoryModal(data).save()
             .then(async(result) => {
-                 await categoryModal.updateOne({ _id: request.body.sub_categories }, { $push: { sub_categories: { $each: [result._id] } } });
+                 await categoryModal.updateOne({ _id: request.body.parent_category }, { $push: { sub_categories: { $each: [result._id] } } });
                 const data = {
                     _status: true,
                     _message: 'record created succssfully',
@@ -205,8 +205,9 @@ exports.view = async (request, response) => {
         total_record = await subCategoryModal.find(filter).countDocuments()
 
         await subCategoryModal.find(filter)
+        .select('name parent_category sub_sub_categories image status order')
         .populate('parent_category','name image')
-        .select('name parent_category sub_sub_categories image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
+        .populate('sub_sub_categories','name image').skip(skip).limit(limit).sort({ _id: 'desc' })
             .then((result) => {
                 if (result.length > 0) {
 
@@ -265,7 +266,7 @@ exports.details = async (request, response) => {
                     const data = {
                         _status: true,
                         _message: 'Record found succssfully',
-                        image_path: process.env.default_image,
+                        image_path: process.env.category_image,
                         _data: result
                     }
                     response.send(data);
@@ -300,6 +301,7 @@ exports.details = async (request, response) => {
     }
 }
 exports.update = async (request, response) => {
+
     try {
         var data = request.body;
 
@@ -328,8 +330,8 @@ exports.update = async (request, response) => {
             $set: data
         })
             .then(async(result) => {
-                if (result.matchedCount == 1) {
-                     await categoryModal.updateOne({ _id: request.body.sub_categories }, { $push: { sub_categories: { $each: [result.params.id] } } });
+                if (result.matchedCount > 0 ) {
+                     await categoryModal.updateOne({ _id: request.body.parent_category }, { $push: { sub_categories: { $each: [request.params.id] } } });
                     const data = {
                         _status: true,
                         _message: 'record update succssfully',
@@ -347,7 +349,7 @@ exports.update = async (request, response) => {
 
             })
             .catch((error) => {
-
+                console.log('this is error ', error)
                 var errors = [];
 
                 for (var i in error.errors) {
@@ -379,7 +381,7 @@ exports.destroy = async (request, response) => {
             deleted_at: Date.now()
         }
 
-        await categoryModal.updateMany({
+        await subCategoryModal.updateMany({
             _id: request.body.ids
         }, {
             $set: data

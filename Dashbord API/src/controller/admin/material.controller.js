@@ -22,7 +22,7 @@ exports.create = async(request, response) => {
 
                 for (var i in error.errors) {
                     console.log(error.errors[i].message);
-                }rs
+                }
 
                 const data = {
                     _status: false,

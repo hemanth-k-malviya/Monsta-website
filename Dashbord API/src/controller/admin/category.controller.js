@@ -120,7 +120,7 @@ exports.view = async (request, response) => {
 
         total_record = await categoryModal.find(filter).countDocuments()
 
-        await categoryModal.find(filter).select('name sub_categories image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
+        await categoryModal.find(filter).select('name sub_categories image status order').populate('sub_categories', 'name').skip(skip).limit(limit).sort({ _id: 'desc' })
             .then((result) => {
                 if (result.length > 0) {
 

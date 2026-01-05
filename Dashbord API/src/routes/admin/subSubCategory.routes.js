@@ -36,5 +36,5 @@ module.exports = server => {
 
     routes.post('/change-status', upload.none(), changeStatus);
 
-    server.use('/api/admin/sub-sub-category', routes)
+    server.use('/api/admin/sub-sub-categorys', routes)
 }

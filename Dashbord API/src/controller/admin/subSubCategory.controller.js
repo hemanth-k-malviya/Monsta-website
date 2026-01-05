@@ -105,8 +105,6 @@ exports.create = async (request, response) => {
         data.slug = await generateUniqueSlug(subSubCategoryModal, slug)
     }
 
-
-
     if (request.file) {
         data.image = request.file.filename;
     }
@@ -128,13 +126,13 @@ exports.create = async (request, response) => {
                 var errors = [];
 
                 for (var i in error.errors) {
-                    console.log(error.errors[i].message);
+                    errors.push(error.errors[i].message);
                 }
 
                 const data = {
                     _status: false,
                     _message: 'Something went wrong',
-                    _error: error,
+                    _error: errors,
                     _data: null
                 }
                 response.send(data);
@@ -215,7 +213,7 @@ exports.view = async (request, response) => {
         total_record = await subSubCategoryModal.find(filter).countDocuments()
 
         await subSubCategoryModal.find(filter)
-            .select('name parent_category image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
+            .select('name parent_category  image status order').skip(skip).limit(limit).sort({ _id: 'desc' })
             .populate('parent_category', 'name')
             .populate('sub_category', 'name')
             .then((result) => {
@@ -278,7 +276,7 @@ exports.details = async (request, response) => {
                     const data = {
                         _status: true,
                         _message: 'Record found succssfully',
-                        image_path: process.env.default_image,
+                        image_path: process.env.category_image,
                         _data: result
                     }
                     response.send(data);
@@ -342,7 +340,7 @@ exports.update = async (request, response) => {
         })
             .then(async (result) => {
                 if (result.matchedCount == 1) {
-                    
+
                     await subCategoryModal.updateOne({ _id: request.body.sub_category }, { $push: { sub_sub_categories: { $each: [result._id] } } });
 
                     const data = {
@@ -402,7 +400,7 @@ exports.destroy = async (request, response) => {
             $set: data
         })
             .then((result) => {
-                if (result.matchedCount == 1) {
+                if (result.matchedCount > 0) {
                     const data = {
                         _status: true,
                         _message: 'record deleted succssfully',

@@ -24,6 +24,7 @@ const categorySchema = new mongoose.Schema({
     },
     sub_categories: {
         type: Array,
+        ref : 'sub_categories',
         default: []
     },
     status: {
