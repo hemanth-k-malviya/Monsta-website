@@ -88,12 +88,12 @@ export default function AddCategory() {
     }
     else {
       //update category
-      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_PARENT_CATEGORY_API}/update/${updateId}`, event.target)
+      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_PARENT_CATEGORY_API}/update/${updateId}`,event.target)
         .then((result) => {
           if (result.data._status == true) {
             toast.success(result.data._message);
             event.target.reset()
-            navigate('parent-category/view')
+            navigate('/parent-category/view')
           } else {
             toast.error(result.data._message);
           }
@@ -116,7 +116,7 @@ export default function AddCategory() {
           <li>
             <div className="flex items-center">
               /
-              <Link to={"/category/view"} className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Category</Link>
+              <Link to={"/parent-category/view"} className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Category</Link>
             </div>
           </li>
           <li aria-current="page">

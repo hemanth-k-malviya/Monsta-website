@@ -13,9 +13,9 @@ export default function AddMaterials() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (params.id != '') {
+    if (params.id != '' && params.id != undefined) {
       setUpdateId(params.id); 
-      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/details/${params.id}`)
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_MATERIAL_API}/details/${params.id}`)
         .then((result) => {
           if (result.data._status == true) {
             setMaterialDetails(result.data._data)
@@ -72,6 +72,7 @@ export default function AddMaterials() {
         })
     }
   }
+
   return (
     <div className="w-full">
          <div className="mx-auto py-5">
@@ -89,11 +90,9 @@ export default function AddMaterials() {
                <input
                  type="text" name="name"
                  defaultValue={materialDetails.name}
-                 // {...register("colorName", { required: "Color Name is required" })}
                  className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                  placeholder="Enter Material Name"
                />
-               {/* {errors.colorName && <p className="text-red-500 text-sm">{errors.colorName.message}</p>} */}
              </div>
    
        
@@ -103,14 +102,9 @@ export default function AddMaterials() {
                <input
                  type="number" name="order"
                  defaultValue={materialDetails.order}
-                 // {...register("colorOrder", {
-                 //   required: "Order is required",
-                 //   min: { value: 1, message: "Order must be at least 1" },
-                 // })}
                  className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                  placeholder="Enter Order"
                />
-               {/* {errors.colorOrder && <p className="text-red-500 text-sm">{errors.colorOrder.message}</p>} */}
              </div>
    
              {/* Submit Button */}

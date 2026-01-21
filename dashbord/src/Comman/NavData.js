@@ -25,7 +25,7 @@ export const Nav = [
         subMenu: [
 
             { subTitle: "Contact Enquiries", subIcon: PiRadioButtonDuotone, link: "/enquiry" },
-            { subTitle: "Newsletters", subIcon: PiRadioButtonDuotone  ,link: "/newsletters" }
+            { subTitle: "Newsletters", subIcon: PiRadioButtonDuotone  ,link: "/enquiry/newsletters" }
         ]
     },
     {
@@ -134,8 +134,8 @@ export const Nav = [
         icon: FaUserEdit,
         subMenu: [
 
-            { subTitle: "Add Testimonials", subIcon: PiRadioButtonDuotone ,link: "/Testimonials/add"},
-            { subTitle: "View Testimonials", subIcon: PiRadioButtonDuotone ,link: "/Testimonials/view"}
+            { subTitle: "Add Testimonials", subIcon: PiRadioButtonDuotone ,link: "/testimonials/add"},
+            { subTitle: "View Testimonials", subIcon: PiRadioButtonDuotone ,link: "/testimonials/view"}
         ]
     },
     {

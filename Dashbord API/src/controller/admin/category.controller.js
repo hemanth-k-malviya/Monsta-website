@@ -179,7 +179,7 @@ exports.details = async (request, response) => {
                     const data = {
                         _status: true,
                         _message: 'Record found succssfully',
-                        image_path: process.env.default_image,
+                        image_path: process.env.category_image,
                         _data: result
                     }
                     response.send(data);

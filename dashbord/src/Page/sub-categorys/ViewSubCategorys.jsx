@@ -48,7 +48,7 @@ export default function ViewSubCategorys() {
                 if (result.data._status == true) {
                     setSubCategories(result.data._data)
                     setImageUrl(result.data.image_path)
-                    setTotalPage(result.data._paginate.total_pages)
+                    setTotalPage(result.data._paginate.total_page)
                 } else {
                     setSubCategories([]);
                     setTotalPage(1);
@@ -157,10 +157,6 @@ export default function ViewSubCategorys() {
             })
     }
 
-
-
-
-
     return (
 
         <section className="w-full">
@@ -173,7 +169,7 @@ export default function ViewSubCategorys() {
                     <div className="">
 
                         <select
-                            name="parentCatSelectBox"
+                            name="parent_category"
                             onChange={filterByParentCategory}
                             className="border  border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-3"
                         >
@@ -316,7 +312,7 @@ export default function ViewSubCategorys() {
                                                             <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
 
                                                                 <div class="py-4">
-                                                                    <div class="text-base font-semibold">{v.name}</div>
+                                                                    <div class="text-base font-semibold">{v.parent_category?.name || "N/A"}</div>
                                                                 </div>
                                                             </th>
                                                             <td class=" py-4">
@@ -324,6 +320,7 @@ export default function ViewSubCategorys() {
                                                             </td>
                                                             <td class=" py-4">
                                                                 {
+
                                                                     v.imageUrl != ""
                                                                         ?
                                                                         <img class="w-10 h-10 rounded-full" src={`${imageUrl}${v.image}`} />
@@ -349,7 +346,7 @@ export default function ViewSubCategorys() {
                                                             </td>
                                                             <td class=" py-4">
 
-                                                                    <Link to={`/sub-categorys/update/${v._id}`} >
+                                                                <Link to={`/sub-categorys/update/${v._id}`} >
                                                                     <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                         <MdModeEdit className='text-[18px]' />
                                                                     </div>
@@ -390,8 +387,6 @@ export default function ViewSubCategorys() {
                     </div>
                 </div>
             </div>
-
-
 
         </section>
     )

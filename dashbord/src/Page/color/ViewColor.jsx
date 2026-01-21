@@ -20,7 +20,7 @@ export default function ViewColor() {
   const [searchCode, setSearchCode] = useState('');
   const [checkBoxValue, setcheckBoxValue] = useState([]);
   const [buttonDisabled, setButtonDisabled] = useState(true);
- const [apiStatus, setApiStatus] = useState(true);
+  const [apiStatus, setApiStatus] = useState(true);
 
   useEffect(() => {
     axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/view`, {
@@ -40,7 +40,7 @@ export default function ViewColor() {
       .catch(() => {
         toast.error('Something went wrong !!')
       })
-  }, [currentPage, searchName, searchCode,apiStatus])
+  }, [currentPage, searchName, searchCode, apiStatus])
 
   const searchHandler = (event) => {
     event.preventDefault();
@@ -110,17 +110,17 @@ export default function ViewColor() {
   }
 
   const changestatus = () => {
-    axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/change-status`,{
-      ids : checkBoxValue
+    axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/change-status`, {
+      ids: checkBoxValue
     })
       .then((result) => {
         if (result.data._status == true) {
-         toast.success(result.data._message);
-         setApiStatus(!apiStatus);
-         setcheckBoxValue([]);
-         setButtonDisabled(true)
+          toast.success(result.data._message);
+          setApiStatus(!apiStatus);
+          setcheckBoxValue([]);
+          setButtonDisabled(true)
         } else {
-         toast.error(result.data._message)
+          toast.error(result.data._message)
         }
       })
       .catch(() => {
@@ -129,17 +129,17 @@ export default function ViewColor() {
   }
 
   const deleteRecords = () => {
-      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/delete`,{
-      ids : checkBoxValue
+    axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/delete`, {
+      ids: checkBoxValue
     })
       .then((result) => {
         if (result.data._status == true) {
-         toast.success(result.data._message);
-         setApiStatus(!apiStatus)
+          toast.success(result.data._message);
+          setApiStatus(!apiStatus)
           setcheckBoxValue([]);
-         setButtonDisabled(true)
+          setButtonDisabled(true)
         } else {
-         toast.error(result.data._message)
+          toast.error(result.data._message)
         }
       })
       .catch(() => {
@@ -199,7 +199,6 @@ export default function ViewColor() {
           </button>
         </form>
 
-
       </div>
       <div className="w-full min-h-[610px]">
         <div className="max-w-[1220px] mx-auto py-5">
@@ -226,12 +225,12 @@ export default function ViewColor() {
           <div className="border border-t-0 rounded-b-md border-slate-400">
 
             {/* border-2 border-[red] */}
-            <div className="relative overflow-x-auto">
+            <div className="relative w-full overflow-x-auto">
 
 
-              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <div className="relative w-full shadow-md sm:rounded-lg overflow-x-auto">
 
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th scope="col" className="p-4">
@@ -279,7 +278,7 @@ export default function ViewColor() {
                                     onClick={() => singlrCheckBox(v._id)}
 
                                     type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                   <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                 </div>
                               </td>
@@ -336,12 +335,11 @@ export default function ViewColor() {
 
                   </tbody>
                 </table>
-                <div className='w-300 auto mb-3'>
+                <div className='w-full mx-auto mb-3 flex justify-center'>
                   <ResponsivePagination
                     current={currentPage}
                     total={totalPages}
-                    onPageChange={setCurrentPage}
-                  />
+                    onPageChange={setCurrentPage} />
                 </div>
               </div>
 
@@ -357,5 +355,3 @@ export default function ViewColor() {
     </section>
   )
 }
-
- <img class="w-10 h-10 rounded-full" src="https://packshifts.in/images/iso.png" alt="Jese image"/>

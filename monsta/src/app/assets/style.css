@@ -1,0 +1,70 @@
+@import "tailwindcss";
+.slider-container {
+  width: 600px;
+  height: 400px;
+  margin: 50px auto;
+  overflow: hidden; /* Hide slides that are "off-screen" */
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.slider-track {
+  display: flex;
+  height: 100%;
+  /* This CSS transition creates the smooth sliding effect */
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%; /* Each slide takes full width of container */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 3rem;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+.btn-left { left: 10px; }
+.btn-right { right: 10px; }
+
+/* Custom colored scrollbar used by components that need themed scrollbars */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #C09578 rgba(0,0,0,0.06);
+}
+
+/* WebKit browsers */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 10px;
+}
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.04);
+  border-radius: 9999px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #C09578;
+  border-radius: 9999px;
+  border: 2px solid rgba(0,0,0,0.04);
+}
+/* hide arrow buttons in WebKit scrollbars */
+.scrollbar-custom::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}

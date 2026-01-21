@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import $ from "jquery";
 import "dropify/dist/css/dropify.min.css";
 import "dropify/dist/js/dropify.min.js";
-import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from '../../Comman/Breadcrumb';
 import axios from 'axios';
@@ -13,17 +12,17 @@ export default function AddSubCategorys() {
 
   const [categories, setCategories] = useState([]);
   const params = useParams();
-  const [updateId, setUpdateId] = useState('')
+  const [updateId, setUpdateId] = useState('');
   const [imageURL, setImageUrl] = useState('');
   const [subCategoryDetails, setSubCategoryDetails] = useState('')
   const navigate = useNavigate();
- const [parent_category_id, set_parent_category_id] = useState('');
+  const [parent_category_id, set_parent_category_id] = useState('');
 
 
   // view category
   useEffect(() => {
-    axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/view-category`,{
-      id:parent_category_id
+    axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/view-category`, {
+      id: parent_category_id
     })
       .then((result) => {
         if (result.data._status == true) {
@@ -66,7 +65,7 @@ export default function AddSubCategorys() {
             setSubCategoryDetails(result.data._data)
             set_parent_category_id(result.data._data.parent_category)
             if (result.data._data.image != '') {
-              setImageUrl(`${result.data._image_path}${result.data._data.image}`)
+              setImageUrl(`${result.data.image_path}${result.data._data.image}`)
             }
           } else {
             setSubCategoryDetails('');
@@ -99,13 +98,13 @@ export default function AddSubCategorys() {
         })
     }
     else {
-      //update material
-      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/update/${updateId}`, event.target)
+      //update sub Sub categroies
+      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_SUB_CATEGORY_API}/update/${params.id}`, event.target)
         .then((result) => {
           if (result.data._status == true) {
             toast.success(result.data._message);
             event.target.reset()
-            navigate('sub-categorys/view')
+            navigate('/sub-categorys/view')
           } else {
             toast.error(result.data._message);
           }
@@ -156,10 +155,11 @@ export default function AddSubCategorys() {
                     className="border-2 border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
                   >
                     <option value="">Select Category</option>
+
                     {
                       categories.map((v, i) => {
                         return (
-                          <option value={v._id} selected={v._id == subCategoryDetails.parent_category ? 'selected' : ''}>{v.name}</option>
+                           <option value={v._id} selected={ v._id == subCategoryDetails.parent_category ? 'selected' : '' } >{v.name}</option>
                         )
 
                       })
@@ -195,7 +195,7 @@ export default function AddSubCategorys() {
                   <input
                     type="text"
                     name='order'
-                    defaultValue={subCategoryDetails.order}
+                    defaultValue={subCategoryDetails.order} 
                     id="categoryName"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Category Order"

@@ -1,30 +1,76 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,useNavigate} from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function AddFaqs() {
-    
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+ const params = useParams();
+  const [updateId, setUpdateId] = useState('');
+  const [faqsDetails, setfaqsDetails] = useState({});
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+   useEffect(() => {
+    if (params.id) {
+      setUpdateId(params.id);
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_FAQS_API}/details/${params.id}`)
+        .then((result) => {
+          if (result.data._status === true) {
+            setfaqsDetails(result.data._data || {});
+          } else {
+            setfaqsDetails({});
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !!');
+        });
+    } else {
+      setfaqsDetails({});
+      setUpdateId('');
+    }
+  }, [params.id])
 
-  // update work
-  const [updateIdState, setUpdateIdState] = useState(false)
-  let updateId = useParams().id
-  useEffect(() => {
-    if (updateId == undefined) {
-      setUpdateIdState(false)
+  const formHandler = (event) => {
+    event.preventDefault();
+
+    const payload = {
+      question: event.target.question.value,
+      answer: event.target.answer.value,
+      order: event.target.order.value
+    };
+
+    if (!updateId) {
+      // add FAQS
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_FAQS_API}/create`, payload)
+        .then((result) => {
+          if (result.data._status === true) {
+            toast.success(result.data._message);
+            event.target.reset();
+            navigate('/faqs/view');
+          } else {
+            toast.error(result.data._message);
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong!');
+        });
+    } else {
+      // update FAQS
+      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_FAQS_API}/update/${updateId}`, payload)
+        .then((result) => {
+          if (result.data._status === true) {
+            toast.success(result.data._message);
+            event.target.reset();
+            navigate('/faqs/view');
+          } else {
+            toast.error(result.data._message);
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !');
+        });
     }
-    else {
-      setUpdateIdState(true)
-    }
-  }, [updateId])
+  }
   return (
    <section className="w-full">
       <nav className="flex border-b-2" aria-label="Breadcrumb">
@@ -37,13 +83,13 @@ export default function AddFaqs() {
           <li>
             <div className="flex items-center">
               /
-              <Link to={"/faq/view"} className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Faq</Link>
+              <Link to={"/faqs/view"} className="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Faq</Link>
             </div>
           </li>
           <li aria-current="page">
             <div className="flex items-center">
               /
-              <span className="ms-1 text-md font-medium text-gray-500 md:ms-2">{updateIdState ? "Update" : "Add"}</span>
+              <span className="ms-1 text-md font-medium text-gray-500 md:ms-2">{updateId ? "Update" : "Add"}</span>
             </div>
           </li>
         </ol>
@@ -52,9 +98,9 @@ export default function AddFaqs() {
       <div className="w-full min-h-[610px]">
         <div className="max-w-[1220px] mx-auto py-5">
           <h3 className="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
-            {updateIdState ? "Update Faq" : "Add Faq"}
+            {updateId ? "Update Faq" : "Add Faq"}
           </h3>
-          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
+          <form key={faqsDetails._id || 'new'} onSubmit={formHandler} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
 
             <div className="">
               <div className="mb-5">
@@ -66,12 +112,13 @@ export default function AddFaqs() {
                 </label>
                 <input
                   type="text"
-                  {...register("Question", { required: "Question is required" })}
+                  name='question'
+                  defaultValue={faqsDetails.question || ''}
                   id="Question"
                   className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                   placeholder="Question"
                 />
-                {errors.Question && <p className="text-red-500">{errors.Question.message}</p>}
+        
               </div>
 
               <div className="mb-5">
@@ -82,13 +129,13 @@ export default function AddFaqs() {
                   Answer
                 </label>
                 <textarea
-
-                  {...register("Answer", { required: "Answer is required" })}
                   id="Answer"
+                  name='answer'
+                  defaultValue={faqsDetails.answer || ''}
                   className="text-[19px] h-[150px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                   placeholder="Answer"
                 ></textarea>
-                {errors.Answer && <p className="text-red-500">{errors.Answer.message}</p>}
+            
               </div>
 
               <div className="mb-5">
@@ -100,12 +147,14 @@ export default function AddFaqs() {
                 </label>
                 <input
                   type="number"
-                  {...register("order", { required: "Order is required" })}
+                  name='order'
+                  defaultValue={faqsDetails.order || ''}
+                 
                   id="order"
                   className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                   placeholder="Order"
                 />
-                {errors.order && <p className="text-red-500">{errors.order.message}</p>}
+             
               </div>
             </div>
 
@@ -113,7 +162,7 @@ export default function AddFaqs() {
               type="submit"
               className="focus:outline-none my-5 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5"
             >
-              {updateIdState ? "Update Faq" : "Add Faq"}
+              {updateId ? "Update Faq" : "Add Faq"}
             </button>
           </form>
         </div>

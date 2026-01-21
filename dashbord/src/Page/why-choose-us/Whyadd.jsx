@@ -3,43 +3,94 @@ import { useForm } from "react-hook-form";
 import $ from "jquery";
 import "dropify/dist/css/dropify.min.css";
 import "dropify/dist/js/dropify.min.js";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams ,useNavigate} from "react-router-dom";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function Whyadd() {
-     useEffect(() => {
-    $(".dropify").dropify({
-      messages: {
-        default: "Drag and drop ",
-        replace: "Drag and drop ",
-        remove: "Remove",
-        error: "Oops, something went wrong"
-      }
-    });
-  }, []);
+    const [imageURL, setImageUrl] = useState('');
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-  // update work
-  const [updateIdState, setUpdateIdState] = useState(false)
-  let updateId = useParams().id
   useEffect(() => {
-    if (updateId == undefined) {
-      setUpdateIdState(false)
+    const dropifyElement = $("#image");
+
+    if (dropifyElement.data("dropify")) {
+      dropifyElement.data("dropify").destroy();
+      dropifyElement.removeData("dropify");
+    }
+
+    // **Force Update Dropify Input**
+    dropifyElement.replaceWith(
+      `<input type="file" accept="image/*" name="image" id="image"
+          class="dropify" data-height="250" data-default-file="${imageURL}"/>`
+    );
+
+    // **Reinitialize Dropify**
+    $("#image").dropify();
+
+  }, [imageURL]); // ✅ Runs when `defaultImage` updates
+
+  const params = useParams();
+  const [updateId, setUpdateId] = useState('');
+  const [whyDetails, setwhyDetails] = useState('')
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (params.id != '') {
+      setUpdateId(params.id);
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_WHY_API}/details/${params.id}`)
+        .then((result) => {
+          if (result.data._status == true) {
+            setwhyDetails(result.data._data)
+            if (result.data._data.image != '') {
+              setImageUrl(`${result.data._image_path}${result.data._data.image}`)
+            }
+          } else {
+            setwhyDetails('');
+
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !!')
+        })
+    }
+  }, [params])
+
+  const formHandler = (event) => {
+    event.preventDefault();
+
+    if (!updateId) {
+      //add category
+      axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_WHY_API}/create`, event.target)
+        .then((result) => {
+          if (result.data._status == true) {
+            toast.success(result.data._message);
+            event.target.reset()
+            navigate('/why-choose-us/view')
+          } else {
+            toast.error(result.data._message);
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong!');
+        })
     }
     else {
-      setUpdateIdState(true)
+      //update category
+      axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_WHY_API}/update/${updateId}`, event.target)
+        .then((result) => {
+          if (result.data._status == true) {
+            toast.success(result.data._message);
+            event.target.reset()
+            navigate('/why-choose-us/view')
+          } else {
+            toast.error(result.data._message);
+          }
+        })
+        .catch(() => {
+          toast.error('Something went wrong !');
+        })
     }
-  }, [updateId])
-
-
+  }
   return (
     <section className="w-full">
       <nav className="flex border-b-2" aria-label="Breadcrumb">
@@ -57,19 +108,18 @@ export default function Whyadd() {
               </li>
               <li aria-current="page">
                 <div className="flex items-center">
-                 / {updateIdState ? "Update" : "Add"}
+                 / {updateId ? "Update" : "Add"}
                 </div>
               </li>
             </ol>
           </nav>
-      {/* <Breadcrumb path={"Why Choose Us"} path2={updateIdState ? "Update" : "Add"} link={"/why-choose-us/view"} slash={"/"} /> */}
-
+      
       <div className="w-full min-h-[610px]">
         <div className="max-w-[1220px] mx-auto py-5">
           <h3 className="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
-            {updateIdState ? "Update Why Choose Us" : "Add Why Choose Us"}
+            {updateId ? "Update Why Choose Us" : "Add Why Choose Us"}
           </h3>
-          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
+          <form onSubmit={formHandler} autoComplete="off" className="border border-t-0 p-3 rounded-b-md border-slate-400">
             <div className="flex gap-5">
               <div className="w-1/3">
                 <label
@@ -80,12 +130,11 @@ export default function Whyadd() {
                 </label>
                 <input
                   type="file"
-                  {...register("Image", { required: "image is required" })}
-                  id="Image"
+                  id="image"
+                  name='image'
                   className="dropify"
                   data-height="250"
                 />
-                {errors.Image && <p className="text-red-500">{errors.Image.message}</p>}
               </div>
               <div className="w-2/3">
                 <div className="mb-5">
@@ -97,12 +146,12 @@ export default function Whyadd() {
                   </label>
                   <input
                     type="text"
-                    {...register("Title", { required: "Title is required" })}
+                    name='name'
+                    defaultValue={whyDetails.name}
                     id="Title"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Title"
                   />
-                  {errors.Title && <p className="text-red-500">{errors.Title.message}</p>}
                 </div>
                 <div className="mb-5">
                   <label
@@ -113,12 +162,12 @@ export default function Whyadd() {
                   </label>
                   <input
                     type="number"
-                    {...register("order", { required: "Order is required" })}
+                    name='order'
+                    defaultValue={whyDetails.order}
                     id="order"
                     className="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Order"
                   />
-                  {errors.order && <p className="text-red-500">{errors.order.message}</p>}
                 </div>
 
 
@@ -130,12 +179,12 @@ export default function Whyadd() {
                     Description
                   </label>
                   <textarea
-                    {...register("Description", { required: "Description is required" })}
+                  name='discription'
+                  defaultValue={whyDetails.discription}
                     id="Description"
                     className="text-[19px] resize-none h-[100px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                     placeholder="Description"
                   > </textarea>
-                  {errors.Description && <p className="text-red-500">{errors.Description.message}</p>}
                 </div>
               </div>
             </div>
@@ -143,7 +192,7 @@ export default function Whyadd() {
               type="submit"
               className="focus:outline-none my-5 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5"
             >
-              {updateIdState ? "Update Category" : "Add Category"}
+              {updateId ? "Update Category" : "Add Category"}
             </button>
           </form>
         </div>

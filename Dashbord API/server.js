@@ -22,6 +22,9 @@ server.get('/', (request, response) => {
 server.use('/uploads/default', express.static('uploads/default'));
 server.use('/uploads/categories', express.static('uploads/categories'));
 server.use('/uploads/products', express.static('uploads/products'));
+server.use('/uploads/slider', express.static('uploads/slider'));
+server.use('/uploads/whyChooseUs', express.static('uploads/whyChooseUs'));
+server.use('/uploads/testimonials', express.static('uploads/testimonials'));
 
 // website api
 // require('./src/routes/website/user.routes.js')(server);
@@ -35,6 +38,13 @@ require('./src/routes/admin/subCategory.routes.js')(server);
 require('./src/routes/admin/subSubCategory.routes.js')(server);
 require('./src/routes/admin/product.routes.js')(server);
 require('./src/routes/admin/user.routes.js')(server);
+require('./src/routes/admin/country.routes .js')(server);
+require('./src/routes/admin/slider.routes .js')(server);
+require('./src/routes/admin/whyChooseUs.routes.js')(server);
+require('./src/routes/admin/faqs.routes.js')(server);
+require('./src/routes/admin/testimonials.routes.js')(server);
+
+
 
 mongoose.connect(`mongodb+srv://${process.env.user_name}:${process.env.password}@cluster0.mn2naxz.mongodb.net/${process.env.db_name}?appName=Cluster0`)
     .then(() => console.log('Connected!'))

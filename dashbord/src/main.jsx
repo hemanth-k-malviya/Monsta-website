@@ -23,17 +23,17 @@ import AddSliders from './Page/sliders/AddSliders.jsx'
 import ViewSliders from './Page/sliders/ViewSliders.jsx'
 import AddSubCategorys from './Page/sub-categorys/AddSubCategorys.jsx'
 import ViewSubCategorys from './Page/sub-categorys/ViewSubCategorys.jsx'
-import AddSubSubCategorys from './Page/sub-sub-categorys/AddSubSubCategorys.jsx'
-import ViewSubSubCategorys from './Page/sub-sub-categorys/ViewSubSubCategorys.jsx'
 import AddProducts from './Page/products/AddProducts.jsx'
 import ViewProducts from './Page/products/ViewProducts.jsx'
-import Newsletters from './Page/Enquirys/Newsletters.jsx'
 import Dashboard from './Page/Dashbord.jsx'
 import Profile from './Page/Profile.jsx'
 import CompanyProfile from './Page/CompanyProfile.jsx'
 import AddMaterials from './Page/Materials/AddMaterials.jsx'
 import AddCategory from './Page/parent-Categorys/AddCategorys.jsx'
 import ViewCategorys from './Page/parent-Categorys/ViewCategorys.jsx'
+import AddSubSubCategorys from './Page/sub-sub-categorys/AddSubSubCategorys.jsx'
+import ViewSubSubCategorys from './Page/sub-sub-categorys/ViewSubSubCategorys.jsx'
+import Newsletters from './Page/Enquirys/Newsletters.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -65,11 +65,11 @@ createRoot(document.getElementById('root')).render(
 
           <Route path="enquiry" >
             <Route path='' element={<ContactEnq />} />
-            <Route path='' element={<Newsletters/>} />
+            <Route path='newsletters' element={<Newsletters/>} />
             <Route path='update/:id' element={<ContactEnq />} />
           </Route>
 
-          <Route path="parent-Category" >
+          <Route path="parent-category" >
             <Route path='add' element={<AddCategory/>} />
             <Route path='view' element={<ViewCategorys/>} />
             <Route path='update/:id' element={<AddCategory/>} />

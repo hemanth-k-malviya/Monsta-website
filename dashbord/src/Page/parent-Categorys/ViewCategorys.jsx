@@ -29,7 +29,7 @@ export default function ViewCategorys() {
                 if (result.data._status == true) {
                     setCategories(result.data._data)
                     setImageUrl(result.data.image_path)
-                    setTotalPage(result.data._paginate.total_pages)
+                    setTotalPage(result.data._paginate.total_page)
                 } else {
                     setCategories([]);
                     setTotalPage(1);
@@ -303,7 +303,7 @@ export default function ViewCategorys() {
                                                                 </td>
                                                                 <td class=" py-4">
 
-                                                                    <Link to={`/category/update/${v._id}`} >
+                                                                    <Link to={`/parent-category/update/${v._id}`} >
                                                                         <div className="rounded-[50%] w-[40px] h-[40px] flex items-center justify-center text-white bg-blue-700  border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                             <MdModeEdit className='text-[18px]' />
                                                                         </div>

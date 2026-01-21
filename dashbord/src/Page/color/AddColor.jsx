@@ -13,7 +13,7 @@ export default function AddColor() {
 
   useEffect(() => {
     if (params.id != '') {
-      setUpdateId(params.id); 
+      setUpdateId(params.id);
       axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/details/${params.id}`)
         .then((result) => {
           if (result.data._status == true) {
@@ -43,7 +43,7 @@ export default function AddColor() {
       order: event.target.order.value,
     }
 
-    
+
     if (!updateId) {
       //add color
       axios.post(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/create`, formData)
@@ -59,7 +59,7 @@ export default function AddColor() {
         .catch(() => {
           toast.error('Something went wrong !');
         })
-    } 
+    }
     else {
       //update color
       axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/update/${updateId}`, formData)
