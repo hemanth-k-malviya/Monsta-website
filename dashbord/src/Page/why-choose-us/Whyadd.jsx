@@ -7,7 +7,7 @@ import { Link, useParams ,useNavigate} from "react-router-dom";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export default function Whyadd() {
+export default function WhyAdd() {
     const [imageURL, setImageUrl] = useState('');
 
   useEffect(() => {

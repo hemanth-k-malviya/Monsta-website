@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic-light-dark.css';
 
-export default function Whyview() {
+export default function WhyView() {
     let [activeFilter, setactiveFilter] = useState(true);
     const [whyChoose, setWhyChoose] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);

@@ -9,8 +9,6 @@ import AddColor from './Page/color/AddColor.jsx'
 import ViewColor from './Page/color/ViewColor.jsx'
 import Users from './Page/user/Users.jsx'
 import ContactEnq from './Page/Enquirys/ContactEnq.jsx'
-import Whyadd from './Page/why-choose-us/whyadd.jsx'
-import Whyview from './Page/why-choose-us/whyview.jsx'
 import Orders from './Page/orders/Orders.jsx'
 import AddTestimonials from './Page/testimonials/AddTestimonials.jsx'
 import ViewTestimonials from './Page/testimonials/ViewTestimonials.jsx'
@@ -37,6 +35,8 @@ import Newsletters from './Page/Enquirys/Newsletters.jsx'
 import ForgotPassword from './Page/ForgotPassword.jsx'
 import ResetPassword from './Page/ResetPassword.jsx'
 import { ToastContainer } from 'react-toastify'
+import WhyAdd from './Page/why-choose-us/whyadd.jsx'
+import WhyView from './Page/why-choose-us/Whyview.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -105,9 +105,9 @@ createRoot(document.getElementById('root')).render(
           </Route>
 
           <Route path="why-choose-us" >
-            <Route path='add' element={<Whyadd />} />
-            <Route path='view' element={<Whyview />} />
-            <Route path='update/:id' element={<Whyadd />} />
+            <Route path='add' element={<WhyAdd />} />
+            <Route path='view' element={<WhyView />} />
+            <Route path='update/:id' element={<WhyAdd />} />
 
           </Route>
 
