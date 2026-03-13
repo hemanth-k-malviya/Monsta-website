@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import { MdAdd } from 'react-icons/md'
 import { MdRemove } from 'react-icons/md'
+import Link from 'next/link';
 
 export default function FAQS() {
     const [openIndex, setOpenIndex] = useState(null)

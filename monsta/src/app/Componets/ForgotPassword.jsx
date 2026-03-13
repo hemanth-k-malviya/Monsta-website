@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { IoIosArrowForward } from 'react-icons/io'
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 export default function ForgotPassword() {
     const [forgotLoading, setforgotLoading] = useState(false);
