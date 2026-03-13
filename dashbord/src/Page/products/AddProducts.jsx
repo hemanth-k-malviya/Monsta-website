@@ -6,8 +6,6 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
 
 export default function AddProducts() {
 
