@@ -35,8 +35,8 @@ import Newsletters from './Page/Enquirys/Newsletters.jsx'
 import ForgotPassword from './Page/ForgotPassword.jsx'
 import ResetPassword from './Page/ResetPassword.jsx'
 import { ToastContainer } from 'react-toastify'
-import WhyAdd from './Page/why-choose-us/WhyAdd.jsx';
-import WhyView from './Page/why-choose-us/WhyView.jsx';
+import WhyAdd from './Page/why-choose-us/Whyadd.jsx';
+import WhyView from './Page/why-choose-us/Whyview.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -105,12 +105,12 @@ createRoot(document.getElementById('root')).render(
 
           </Route>
 
-          {/* <Route path="why-choose-us" >
+          <Route path="why-choose-us" >
             <Route path='add' element={<WhyAdd />} />
             <Route path='view' element={<WhyView />} />
             <Route path='update/:id' element={<WhyAdd />} />
 
-          </Route> */}
+          </Route>
 
           <Route path="orders" >
             <Route path='' element={<Orders />} />
