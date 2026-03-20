@@ -128,6 +128,25 @@ export default function ViewColor() {
       })
   }
 
+  const changeSingleStatus = (id) => {
+    if (!id) return;
+
+    axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/change-status`, {
+      ids: [id]
+    })
+      .then((result) => {
+        if (result.data._status == true) {
+          toast.success(result.data._message);
+          setApiStatus(!apiStatus);
+        } else {
+          toast.error(result.data._message);
+        }
+      })
+      .catch(() => {
+        toast.error('Something went wrong !!');
+      })
+  }
+
   const deleteRecords = () => {
     axios.put(`${import.meta.env.VITE_BASE_URL}/${import.meta.env.VITE_COLOR_API}/delete`, {
       ids: checkBoxValue
@@ -299,9 +318,19 @@ export default function ViewColor() {
                                 {
                                   v.status == 1
                                     ?
-                                    <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Active</button>
+                                    <button
+                                      type="button"
+                                      onClick={() => changeSingleStatus(v._id)}
+                                      class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">
+                                      Active
+                                    </button>
                                     :
-                                    <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">Deactive</button>
+                                    <button
+                                      type="button"
+                                      onClick={() => changeSingleStatus(v._id)}
+                                      class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2">
+                                      Deactive
+                                    </button>
                                 }
 
 

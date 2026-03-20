@@ -105,12 +105,12 @@ createRoot(document.getElementById('root')).render(
 
           </Route>
 
-          <Route path="why-choose-us" >
+          {/* <Route path="why-choose-us" >
             <Route path='add' element={<WhyAdd />} />
             <Route path='view' element={<WhyView />} />
             <Route path='update/:id' element={<WhyAdd />} />
 
-          </Route>
+          </Route> */}
 
           <Route path="orders" >
             <Route path='' element={<Orders />} />

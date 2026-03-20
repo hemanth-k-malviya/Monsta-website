@@ -12,12 +12,22 @@ export default function Left() {
   return (
     <div className='w-full overflow-y-auto h-screen bg-gradient-to-br from-gray-800 to-gray-900 scrollbar-hide'>
       {/* Logo Section */}
-      <div className="p-4 border-b border-gray-700/50">
-        <img 
-          className="w-[220px] h-[80px] object-contain mx-auto hover:opacity-90 transition-opacity" 
-          src="https://mastercoach.in/wp-content/uploads/2021/09/header_logo.png" 
-          alt="logo" 
-        />
+      <div className="px-4 pt-5 pb-4 border-b border-gray-700/50">
+        <Link to="/dashboard" className="block">
+          <div className="p-3 rounded-lg bg-gray-800/30 hover:bg-gray-700/40 transition-colors ring-1 ring-white/5">
+            <div className="flex items-center justify-center">
+              <img
+                className="w-[190px] h-[56px] object-contain bg-white rounded-md px-2 py-1 shadow-sm"
+                src="/image/logo.png"
+                alt="logo"
+              />
+            </div>
+            <div className="mt-2 flex items-center justify-center gap-2 text-xs text-gray-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400/80" />
+              <span className="tracking-wide">Admin Dashboard</span>
+            </div>
+          </div>
+        </Link>
       </div>
 
       {/* Navigation Section */}
