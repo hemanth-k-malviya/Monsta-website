@@ -59,21 +59,21 @@ export default function Home() {
             {/* Chair Collection end */}
             <div className="max-w-[1280px] w-full mx-auto px-4">
                 <div className="flex justify-center mt-6 sm:mt-8">
-                    <div className="w-full overflow-x-auto scrollbar-hidden">
-                        <div className="w-max min-w-full flex flex-nowrap border border-gray-200 rounded-md">
+                    <div className="w-full sm:max-w-3xl overflow-x-auto sm:overflow-visible scrollbar-hidden">
+                        <div className="w-max min-w-full sm:w-full flex flex-nowrap sm:grid sm:grid-cols-3 border border-gray-200 rounded-md">
                             <div
                                 onClick={() => setActiveTab('featured')}
-                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium border-r border-gray-300 hover:text-[#C09578] whitespace-nowrap cursor-pointer ${activeTab === 'featured' ? 'text-[#C09578]' : 'text-black'}`} >
+                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium border-r sm:border-r border-gray-300 hover:text-[#C09578] whitespace-nowrap cursor-pointer transition-colors ${activeTab === 'featured' ? 'text-[#C09578] bg-[#C09578]/5' : 'text-black'}`} >
                                 Featured
                             </div>
                             <div
                                 onClick={() => setActiveTab('new_arrival')}
-                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium border-r border-gray-300 hover:text-[#C09578] whitespace-nowrap cursor-pointer ${activeTab === 'new_arrival' ? 'text-[#C09578]' : 'text-black'}`}>
+                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium border-r border-gray-300 hover:text-[#C09578] whitespace-nowrap cursor-pointer transition-colors ${activeTab === 'new_arrival' ? 'text-[#C09578] bg-[#C09578]/5' : 'text-black'}`}>
                                 New Arrivals
                             </div>
                             <div
                                 onClick={() => setActiveTab('onsale')}
-                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium hover:text-[#C09578] whitespace-nowrap cursor-pointer ${activeTab === 'onsale' ? 'text-[#C09578]' : 'text-black'}`}>
+                                className={`px-4 sm:px-8 lg:px-12 py-2.5 text-center text-sm sm:text-lg font-medium hover:text-[#C09578] whitespace-nowrap cursor-pointer transition-colors ${activeTab === 'onsale' ? 'text-[#C09578] bg-[#C09578]/5' : 'text-black'}`}>
                                 Onsale
                             </div>
                         </div>
@@ -85,9 +85,9 @@ export default function Home() {
             </div>
 
             {/* New Trending Collection */}
-            <div className="w-full my-10 sm:my-12 bg-cover bg-center bg-[url('/images/imgi_37_e9234fa4-3ff6-4a6e-a00e-0c9ff26e7b20-1670180400.jpg')] min-h-[320px] sm:min-h-[420px] md:min-h-[500px]">
-                <div className="max-w-[1280px] w-full mx-auto relative px-4">
-                    <div className='absolute top-1/2 left-5 sm:left-10 md:left-20 -translate-y-1/2 transition-transform duration-300 hover:scale-110'>
+            <div className="w-full my-10 sm:my-12 bg-cover bg-center bg-[url('/images/imgi_37_e9234fa4-3ff6-4a6e-a00e-0c9ff26e7b20-1670180400.jpg')] min-h-[320px] sm:min-h-[420px] md:min-h-[500px] relative">
+                <div className="max-w-[1280px] w-full mx-auto px-4 min-h-[320px] sm:min-h-[420px] md:min-h-[500px] flex items-center">
+                    <div className='ml-5 sm:ml-10 md:ml-20 transition-transform duration-300 hover:scale-110'>
                         <p className='text-[28px] sm:text-[40px] font-bold leading-tight'>New Trending Collection</p>
                         <p className='text-[14px] sm:text-[18px] text-gray-600'>We Believe That Good Design is Always in Season</p>
                         <button className='border-2 border-[#bf9070] text-[13px] sm:text-[14px] text-[#bf9070] py-3 px-5 mt-4'>SHOPPING NOW</button>

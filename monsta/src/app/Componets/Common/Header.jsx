@@ -1,5 +1,5 @@
  "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { IoIosSearch } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
@@ -24,7 +24,6 @@ export default function Header() {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
     const { totalQuantity, totalAmount } = useSelector((state) => state.cart);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const cookieToken = Cookies.get("user_login") || null;
@@ -47,7 +46,7 @@ export default function Header() {
 
                 {/* Top Bar */}
                 <div className="max-w-[1280px] w-full mx-auto my-1 px-4">
-                    <div className="hidden sm:flex justify-between items-center py-2 w-full ">
+                    <div className="hidden lg:flex justify-between items-center py-2 w-full ">
                         <div className="text-sm">
                             <p> Contact us 24/7 : +91-98745612330 / furnitureinfo@gmail.com</p>
                         </div>
@@ -76,98 +75,95 @@ export default function Header() {
                         </div>
 
                     </div>
+
+                    <div className="flex lg:hidden justify-between items-center py-2 text-xs sm:text-sm gap-3">
+                        <p className="text-gray-600 truncate">+91-98745612330</p>
+                        <div className="flex items-center gap-3 shrink-0">
+                            {token ? (
+                                <>
+                                    <Link href="/my-dashboard" className="hover:text-[#C09578] transition-colors whitespace-nowrap">
+                                        Dashboard
+                                    </Link>
+                                    <button onClick={logout} className="hover:text-[#C09578] transition-colors cursor-pointer whitespace-nowrap">
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <Link href="/login-register" className="hover:text-[#C09578] transition-colors whitespace-nowrap">
+                                    Login
+                                </Link>
+                            )}
+                        </div>
+                    </div>
                 </div>
                 <div className='border border-gray-200 m-1'></div>
                 {/* Middle Part */}
-                <div className="max-w-[1280px] mx-auto py-4 sm:py-5 w-full px-4 sm:px-5">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                        {/* Logo + icons row (mobile) */}
-                        <div className="flex items-center justify-between sm:justify-start gap-3">
-                            <Link href={'/'} aria-label="Home">
-                                <img
-                                    src="/images/logo.png"
-                                    alt="logo"
-                                    className="w-[120px] sm:w-[150px]"
-                                />
+                <div className="hidden lg:block max-w-[1280px] h-[80px] mx-auto py-5 w-full px-5 ">
+                    <div className="flex items-center w-full ">
+
+                        <div className="">
+                            <Link href={'/'}><img src="/images/logo.png" alt="logo" className='w-[150px] ml-3 ' /></Link>
+                        </div>
+
+                        <div className="text-sm flex border border-gray-200 p-1 ml-[550px]">
+                            <input type="text" placeholder='Search product...'  className=' p-[5px_25px] outline-none' />
+                            <IoIosSearch className='text-[23px] mt-1' />
+                        </div>
+
+                        <Link href="/wishlist">
+                            <div className="text-sm flex border border-gray-200 ml-2 p-[3.5px] cursor-pointer">
+                                <FaHeart className='text-[23px] m-1 hover:text-[#C09578]' />
+                            </div>
+                        </Link>
+
+                        <Link href="/cart">
+                            <div className="text-sm w-[150px] flex border border-gray-200 ml-7 p-[3.5px_10] relative hover:text-[#C09578] cursor-pointer">
+                                <div className='w-[23px] h-[23px] rounded-[30px] bg-[#C09578] absolute bottom-[8px] left-[-11px]'>
+                                    <div className=' text-[15px] m-[0px_7px] text-white hover:text-[white]'>
+                                        <p>{totalQuantity || 0}</p>
+                                    </div>
+                                </div>
+                                <IoCart className='text-[23px] mx-2 my-1' />
+                                <div className='border-r border-gray-200 my-1 '></div>
+                                <p className='text-[15px] mx-1 my-1 font-semibold'>
+                                    Rs. {(totalAmount || 0).toFixed()}
+                                </p>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+                <div className="lg:hidden max-w-[1280px] mx-auto py-3 w-full px-4">
+                    <div className="flex items-center justify-between gap-3">
+                        <Link href={'/'}>
+                            <img src="/images/logo.png" alt="logo" className='w-[115px] sm:w-[135px]' />
+                        </Link>
+
+                        <div className="flex items-center gap-2 shrink-0 ml-auto">
+                            <Link href="/wishlist">
+                                <div className="text-sm flex border border-gray-200 p-2 cursor-pointer hover:text-[#C09578] transition-colors">
+                                    <FaHeart className='text-[20px]' />
+                                </div>
                             </Link>
-
-                            <div className="flex items-center gap-2">
-                                <Link href="/wishlist" aria-label="Wishlist">
-                                    <div className="text-sm flex border border-gray-200 p-2 cursor-pointer hover:text-[#C09578] transition-colors">
-                                        <FaHeart className='text-[22px] hover:text-[#C09578]' />
+                            <Link href="/cart">
+                                <div className="text-sm flex border border-gray-200 p-2 relative hover:text-[#C09578] cursor-pointer transition-colors">
+                                    <div className='w-[20px] h-[20px] rounded-full bg-[#C09578] absolute -top-2 -left-2 flex items-center justify-center'>
+                                        <p className='text-[11px] text-white'>{totalQuantity || 0}</p>
                                     </div>
-                                </Link>
-
-                                <Link href="/cart" aria-label="Cart">
-                                    <div className="relative text-sm flex items-center gap-2 border border-gray-200 p-2 hover:text-[#C09578] cursor-pointer transition-colors">
-                                        <div className='w-[23px] h-[23px] rounded-full bg-[#C09578] absolute -top-2 -left-1 flex items-center justify-center'>
-                                            <p className="text-[13px] text-white font-semibold">{totalQuantity || 0}</p>
-                                        </div>
-                                        <IoCart className='text-[22px]' />
-                                        <span className="hidden sm:inline text-[15px] font-semibold">
-                                            Rs. {(totalAmount || 0).toFixed()}
-                                        </span>
-                                    </div>
-                                </Link>
-                            </div>
+                                    <IoCart className='text-[20px]' />
+                                </div>
+                            </Link>
                         </div>
+                    </div>
 
-                        {/* Search row */}
-                        <div className="w-full sm:flex-1 flex justify-center">
-                            <div className="w-full sm:max-w-[520px] text-sm flex border border-gray-200 p-1 rounded-lg">
-                                <input
-                                    type="text"
-                                    placeholder='Search product...'
-                                    className='flex-1 p-2 sm:p-[5px_25px] outline-none bg-transparent'
-                                />
-                                <IoIosSearch className='text-[22px] mt-1 mr-2 sm:mr-4' />
-                            </div>
-                        </div>
+                    <div className="mt-3 text-sm flex border border-gray-200 p-1 rounded-md">
+                        <input type="text" placeholder='Search product...' className='flex-1 p-2 outline-none bg-transparent' />
+                        <IoIosSearch className='text-[22px] mt-1 mr-1' />
                     </div>
                 </div>
                 <div className='border border-gray-200 m-1'></div>
             </header>
 
             <div className="max-w-[1280px] mx-auto w-full px-4 font-semibold my-5">
-                {/* Mobile menu toggle */}
-                <div className="lg:hidden flex items-center justify-between">
-                    <p className="text-[15px] text-gray-600">Menu</p>
-                    <button
-                        type="button"
-                        onClick={() => setIsMobileMenuOpen((v) => !v)}
-                        className="px-3 py-2 border border-gray-200 rounded-md hover:border-[#C09578] transition-colors"
-                    >
-                        {isMobileMenuOpen ? 'Close' : 'Open'}
-                    </button>
-                </div>
-
-                {/* Mobile menu content */}
-                {isMobileMenuOpen && (
-                    <div className="lg:hidden mt-4 border border-gray-200 rounded-lg p-3 bg-white">
-                        <div className="flex flex-col gap-3 text-[15px]">
-                            <Link href="/" className="hover:text-[#C09578] transition-colors">
-                                HOME
-                            </Link>
-                            <Link href="/categories" className="hover:text-[#C09578] transition-colors">
-                                LIVING
-                            </Link>
-                            <Link href="/categories" className="hover:text-[#C09578] transition-colors">
-                                SOFA
-                            </Link>
-                            <Link href="/about-us" className="hover:text-[#C09578] transition-colors">
-                                ABOUT US
-                            </Link>
-                            <Link href="/faqs" className="hover:text-[#C09578] transition-colors">
-                                FAQS
-                            </Link>
-                            <Link href="/contact-us" className="hover:text-[#C09578] transition-colors">
-                                CONTACT US
-                            </Link>
-                        </div>
-                    </div>
-                )}
-
-                {/* Desktop menu */}
                 <div className='hidden lg:flex justify-center gap-8 text-[15px]'>
                     <div className='flex  '>
                         <p className=' text-[#C09578]'> HOME</p>
@@ -178,7 +174,7 @@ export default function Header() {
                             <p> LIVING</p>
                             <IoIosArrowDown className='m-[3px]' />
                         </div>
-                        <div className="absolute top-full left-0 w-[90vw] max-w-[480px] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out pt-2 z-50 grid grid-cols-3 gap-2">
+                        <div className="absolute top-full left-0 w-[480px] h-[300px] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out pt-2 z-50 grid grid-cols-3 gap-2">
                             <div className="">
                                 <Link href={'/categories'}>
                                     <p className='hover:text-[#C09578] text-center mt-4 mb-3'>Tables</p>
@@ -239,7 +235,7 @@ export default function Header() {
                             SOFA
                             <IoIosArrowDown className='m-[3px]' />
                         </div>
-                        <div className="absolute top-full left-0 w-[90vw] max-w-[500px] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out pt-2 z-50 grid grid-cols-3 gap-2">
+                        <div className="absolute top-full left-0 w-[500px] h-[300px] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out pt-2 z-50 grid grid-cols-3 gap-2">
                             <div className="">
                                 <Link href={'/categories'}>
                                     <p className='hover:text-[#C09578] text-center mt-4 mb-3'> Sofa Cum Bed</p>
@@ -296,13 +292,22 @@ export default function Header() {
                             <Link href={'/about-us'}><p className='text-[13px] text-left text-gray-400 mb-3 mx-5 hover:text-[#C09578]'>About Us</p></Link>
                             <Link href={'/'}><p className='text-[13px] text-left text-gray-400 mb-3 mx-5 hover:text-[#C09578]'>Cart</p></Link>
                             <Link href={'/'}><p className='text-[13px] text-left text-gray-400 mb-3 mx-5  hover:text-[#C09578]'>Checkout</p></Link>
-                            <Link href={'/faqs'}><p className='text-[13px] text-left text-gray-400 mb-3 mx-5 hover:text-[#C09578]'>Frequently Questions</p></Link>
+                            <Link href={'/frequently-questions'}><p className='text-[13px] text-left text-gray-400 mb-3 mx-5 hover:text-[#C09578]'>Frequently Questions</p></Link>
                         </div>
                     </div>
 
                     <div className='flex hover:text-[#C09578]'>
                         <Link href={'/contact-us'}> CONTACT US</Link>
                     </div>
+                </div>
+
+                <div className="lg:hidden flex items-center gap-2 sm:gap-3 overflow-x-auto whitespace-nowrap text-[13px] sm:text-[14px] font-semibold py-1 scrollbar-hidden">
+                    <Link href={'/'} className='text-[#C09578] px-2 py-1 rounded-md bg-[#C09578]/10'>HOME</Link>
+                    <Link href={'/categories'} className='hover:text-[#C09578] px-2 py-1'>LIVING</Link>
+                    <Link href={'/categories'} className='hover:text-[#C09578] px-2 py-1'>SOFA</Link>
+                    <Link href={'/about-us'} className='hover:text-[#C09578] px-2 py-1'>ABOUT US</Link>
+                    <Link href={'/frequently-questions'} className='hover:text-[#C09578] px-2 py-1'>FAQS</Link>
+                    <Link href={'/contact-us'} className='hover:text-[#C09578] px-2 py-1'>CONTACT US</Link>
                 </div>
             </div>
         </>

@@ -93,7 +93,7 @@ export default function Footer() {
 
                 <div className='shadow  '>
                     <div className='max-w-[500px]  text-center mx-auto'>
-                        <p className='p-[5px] text-[15px] text-[rgb(90,90,90)]'>All Rights Reserved By Furniture | © 2025</p>
+                        <p className='p-[5px] text-[15px] text-[rgb(90,90,90)]'>All Rights Reserved By Furniture | © 2026</p>
                         <p className='p-[5px] ml-[30%]'><img src="https://wscubetech.co/Assignments/furniture/public/frontend/img/icon/papyel2.png" /></p>
                     </div>
                 </div>

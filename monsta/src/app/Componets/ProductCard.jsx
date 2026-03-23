@@ -198,7 +198,7 @@ export default function ProductCard({ activeTab = 'featured' }) {
                                                         <div className="p-1 flex flex-col h-[180px]">
                                                             <div className="text-center p-1">
                                                                 <p className='py-2 text-gray-600 text-sm'>{v?.sub_category?.name || 'Product'}</p>
-                                                                <h4 className='py-2 font-semibold'>{v.name}</h4>
+                                                                <h4 className='py-2 font-semibold line-clamp-2 min-h-[48px] break-words'>{v.name}</h4>
                                                                 <p className='py-2'><del className='text-gray-400'>Rs. {v.actual_price}</del> <span className='text-[#C09578] font-bold'>Rs.{v.sale_price}</span></p>
                                                             </div>
 
