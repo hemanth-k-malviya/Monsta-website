@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoPhonePortrait } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { useForm } from "react-hook-form";
@@ -8,14 +8,11 @@ import "dropify/dist/js/dropify.min.js";
 import Breadcrumb from "../Comman/Breadcrumb";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useProfile } from "../context/ProfileContext";
 
 export default function Profile() {
 
   const [activeTab, setActiveTab] = useState("editProfile");
   const token = localStorage.getItem("token");
-  const imageInputRef = useRef(null);
-  const { refreshProfile } = useProfile();
 
 
   const {
@@ -35,33 +32,24 @@ export default function Profile() {
   const [isLoading, setisLoading] = useState(false);
   const [imageURL, setImageUrl] = useState('');
 
-  const defaultProfileImage = useMemo(() => {
-    if (!imageURL || !userProfile?.image) return "";
-    return `${imageURL}/${userProfile.image}`;
-  }, [imageURL, userProfile]);
-
   useEffect(() => {
-    if (activeTab !== "editProfile") return;
-    if (!imageInputRef.current) return;
+    const dropifyElement = $("#image");
 
-    const $el = $(imageInputRef.current);
-
-    const existing = $el.data("dropify");
-    if (existing) {
-      existing.destroy();
-      $el.removeData("dropify");
+    if (dropifyElement.data("dropify")) {
+      dropifyElement.data("dropify").destroy();
+      dropifyElement.removeData("dropify");
     }
 
-    $el.dropify();
+    // **Force Update Dropify Input**
+    dropifyElement.replaceWith(
+      `<input type="file" accept="image/*" name="image" id="image"
+          class="dropify" data-height="250" data-default-file="${imageURL}"/>`
+    );
 
-    return () => {
-      const inst = $el.data("dropify");
-      if (inst) {
-        inst.destroy();
-        $el.removeData("dropify");
-      }
-    };
-  }, [activeTab, defaultProfileImage]);
+    // **Reinitialize Dropify**
+    $("#image").dropify();
+
+  }, [imageURL,activeTab]); // ✅ Runs when `defaultImage` updates
 
   useEffect(() => {
     if (!token) {
@@ -77,7 +65,7 @@ export default function Profile() {
         if (result.data._status === true) {
           setUserProfile(result.data._data);
           setUserEmail(result.data._data.email);
-          setImageUrl(result.data._image_path)
+           setImageUrl(result.data._image_path)
           setSelectedTitle(result.data._data.gender)
         } else {
           toast.error(result.data._message)
@@ -105,7 +93,6 @@ export default function Profile() {
         if (result.data._status === true) {
           setUserProfile(result.data._data);
           toast.success(result.data._message)
-          refreshProfile();
 
           setUpadateProfile(!updateProfile)
           setisLoading(false)
@@ -229,14 +216,12 @@ export default function Profile() {
                     Choose Image
                   </label>
                   <input
-                    ref={imageInputRef}
                     type="file"
                     accept="image/*"
                     name="image"
                     id="image"
                     className="dropify"
                     data-height="236"
-                    data-default-file={defaultProfileImage}
                   />
                 </div>
                 <div className="w-2/3">

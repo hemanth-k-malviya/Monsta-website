@@ -2,13 +2,8 @@ import React from 'react'
 import { FaBars } from "react-icons/fa";
 import { RiProfileFill } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
-import { useProfile } from '../context/ProfileContext';
 
 export default function Header() {
-  const fallbackImage =
-    "https://i.pinimg.com/736x/bc/b2/3c/bcb23cb2c58aa5604164303f0a9194a1.jpg";
-  const { profileImageUrl } = useProfile();
-
   return (
     <div  className='h-[90px] flex justify-between p-[25px_30px] shadow-xl'>
         <div className='flex mt-[10px] text-[20px] '>
@@ -16,7 +11,7 @@ export default function Header() {
             <h3 className='ml-[10px] text-black'>Dashbord</h3>
         </div>
         <figure className='relative group w-12 h-12 cursor-pointer rounded-full'>
-        <img src={profileImageUrl || fallbackImage} className='w-[50px] h-[50px] rounded-[50%]'/>
+        <img src='https://i.pinimg.com/736x/bc/b2/3c/bcb23cb2c58aa5604164303f0a9194a1.jpg' className='w-[50px] h-[50px] rounded-[50%]'/>
         <HeadDropDown/>
     </figure>
     </div>
