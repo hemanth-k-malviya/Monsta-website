@@ -22,6 +22,7 @@ server.get('/', (request, response) => {
 server.use('/uploads/default', express.static('uploads/default'));
 server.use('/uploads/categories', express.static('uploads/categories'));
 server.use('/uploads/products', express.static('uploads/products'));
+server.use('/uploads/users', express.static('uploads/users'));
 server.use('/uploads/slider', express.static('uploads/slider'));
 server.use('/uploads/whyChooseUs', express.static('uploads/whyChooseUs'));
 server.use('/uploads/testimonials', express.static('uploads/testimonials'));
