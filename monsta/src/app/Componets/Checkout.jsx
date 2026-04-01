@@ -44,6 +44,17 @@ export default function Checkout() {
         setFormData(prev => ({ ...prev, [name]: value }));
     }
 
+    const handlePlaceOrderClick = (e) => {
+        if (buttonLoading) return;
+
+        const confirmed = window.confirm(
+            "This is a demo payment method. Please don't use real card/payment details.\n\nIf you want to test payment, use Razorpay demo/test cards."
+        );
+
+        if (!confirmed) return;
+        palceOrder(e);
+    }
+
     const palceOrder = (e) => {
         if (e && e.preventDefault) {
             e.preventDefault();
@@ -627,15 +638,8 @@ export default function Checkout() {
                                             Back
                                         </button>
                                         <button className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg hover:shadow-lg font-bold transition text-lg"
-                                             onClick={palceOrder}
-                                           disabled=
-                                            {
-                                                buttonLoading
-                                                    ?
-                                                    'disabled'
-                                                    :
-                                                    ''
-                                            }
+                                             onClick={handlePlaceOrderClick}
+                                           disabled={buttonLoading}
                                         >
                                             {
                                                 buttonLoading
