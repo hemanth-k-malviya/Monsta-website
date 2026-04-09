@@ -1,4 +1,4 @@
-const contactModal = require('../../models/ContactEnquiry');
+const contactModal = require('../../models/contactEnquiry');
 const env = require('dotenv').config();
 
 exports.create =async (request, response) => {
