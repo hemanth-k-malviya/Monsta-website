@@ -2,8 +2,8 @@ const express = require('express');
 const routes = express.Router();
 const multer = require('multer')
 const path = require('path');
-const upload = multer({ dest: 'uploads/' })
 const { create, view, details, update, destroy, changeStatus } = require('../../controller/admin/ContactEnquiry.controller');
+const upload = multer({ dest: 'uploads/' })
 
 module.exports = server => {
 
